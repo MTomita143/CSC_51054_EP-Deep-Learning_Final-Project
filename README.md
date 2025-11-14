@@ -7,8 +7,8 @@ Download the dataset from the following link: [**Kaggle Competition Dataset**](h
 
 Place the downloaded files into:
 ```
-data/
-└── raw/
+data
+└── raw
     ├── train.jsonl
     └── kaggle_test.jsonl
 ```
