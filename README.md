@@ -26,7 +26,7 @@ You can train and evaluate models in two ways:
 Open: notebooks/01_baseline.ipynb
 
 ### **2. Using the Command Line**
-Create your model under: `src/models/`
+Create your model under: `src/models/` \
 Then run any model by specifying its filename (without .py):
 
 
