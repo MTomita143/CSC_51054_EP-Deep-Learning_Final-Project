@@ -36,9 +36,19 @@ python3 -m src.train logistic_regression
 
 ---
 
-## Output
+## Output (command line)
 
 Predictions are saved in:
 ```
 outputs/<model_name>_<YYYYMMDD>.csv
 ```
+
+---
+
+## Result (to be updated)
+
+| Date  | Model               | Mean K-Fold Accuracy (%) |
+| ----- | ------------------- | ------------------------ |
+| 14/11 | Logistic Regression | 62.59                    |
+| 14/11 | SVM                 | 62.55                    |
+
