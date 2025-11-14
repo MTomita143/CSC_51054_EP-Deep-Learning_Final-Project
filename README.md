@@ -26,8 +26,9 @@ You can train and evaluate models in two ways:
 Open: notebooks/01_baseline.ipynb
 
 ### **2. Using the Command Line**
+Create your model under: `src/models/`
+Then run any model by specifying its filename (without .py):
 
-Run any model by specifying its name (matching a file in `src/models/`):
 
 ```bash
 python3 -m src.train logistic_regression
