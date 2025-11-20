@@ -51,4 +51,6 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | ----- | ------------------- | ------------------------ |
 | 14/11 | Logistic Regression | 62.59                    |
 | 14/11 | SVM                 | 62.55                    |
+| 20/11 | Logistic Regression with metadata | 64.30                    |
+
 
