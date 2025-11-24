@@ -51,4 +51,8 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | ----- | ------------------- | ------------------------ |
 | 14/11 | Logistic Regression | 62.59                    |
 | 14/11 | SVM                 | 62.55                    |
+| 16/11	|Camembert-base	|70.99|
+| 20/11 | Logistic Regression with metadata | 75.63                    |
+| 20/11 | XGBoost Classification | 77.35                    |
+
 
