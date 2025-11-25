@@ -15,32 +15,35 @@ def load_model_builder(model_name):
     module = importlib.import_module(module_path)
     return module.build_pipeline
 
-def train(model_name="logistic_regression"):
+def train(model_name="logistic_regression", if_kfold = False):
     X, y = load_train()
     X_test, ids = load_test()
 
     build_pipeline = load_model_builder(model_name)
+    
+    if if_kfold:
 
-    print("Running 5-Fold Cross-Validation on training data------------------------")
-    kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        print("Running 5-Fold Cross-Validation on training data------------------------")
+        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
-    scores = []
-    for fold_idx, (train_idx, val_idx) in enumerate(tqdm(kfold.split(X, y), total=kfold.get_n_splits(), desc="CV folds")):
-        X_train_fold, X_val_fold = X.iloc[train_idx], X.iloc[val_idx]
-        y_train_fold, y_val_fold = y.iloc[train_idx], y.iloc[val_idx]
+        scores = []
+        for fold_idx, (train_idx, val_idx) in enumerate(tqdm(kfold.split(X, y), total=kfold.get_n_splits(), desc="CV folds")):
+            X_train_fold, X_val_fold = X.iloc[train_idx], X.iloc[val_idx]
+            y_train_fold, y_val_fold = y.iloc[train_idx], y.iloc[val_idx]
+            
+            model_fold = build_pipeline()
+            model_fold.fit(X_train_fold, y_train_fold)
 
-        model_fold = build_pipeline()
-        model_fold.fit(X_train_fold, y_train_fold)
+            y_pred = model_fold.predict(X_val_fold)
+            score = accuracy_score(y_val_fold, y_pred)
+            scores.append(score)
 
-        y_pred = model_fold.predict(X_val_fold)
-        score = accuracy_score(y_val_fold, y_pred)
-        scores.append(score)
+            print(f"Fold {fold_idx+1} Accuracy: {score * 100:.2f}%")
 
-        print(f"Fold {fold_idx+1} Accuracy: {score * 100:.2f}%")
-
-    print(f"Mean K-Fold Accuracy: {np.mean(scores) * 100:.2f}%")
-    print(f"Std Dev K-Fold Accuracy: {np.std(scores) * 100:.2f}%")
-
+        print(f"Mean K-Fold Accuracy: {np.mean(scores) * 100:.2f}%")
+        print(f"Std Dev K-Fold Accuracy: {np.std(scores) * 100:.2f}%")
+        
+    
     print("Training final model on all training data-------------------------------")
     final_model = build_pipeline()
     final_model.fit(X, y)

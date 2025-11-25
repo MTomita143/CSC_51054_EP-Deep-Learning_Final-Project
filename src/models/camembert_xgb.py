@@ -1,4 +1,5 @@
 # src/models/camembert_xgb.py
+import os
 import numpy as np
 import torch
 from transformers import AutoTokenizer, AutoModel
@@ -29,6 +30,9 @@ class CamembertEmbedder:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.model = AutoModel.from_pretrained(self.model_name).to(self.device)
         self.model.eval()
+        
+        if self.device == "cuda":
+            self.model.half()
 
     def embed_texts(self, texts):
         all_embeddings = []
@@ -43,7 +47,12 @@ class CamembertEmbedder:
             ).to(self.device)
 
             with torch.no_grad():
-                outputs = self.model(**tokens)
+                if self.device == "cuda":
+                    # mixed precision for speed
+                    with torch.cuda.amp.autocast():
+                        outputs = self.model(**tokens)
+                else:
+                    outputs = self.model(**tokens)
                 last_hidden = outputs.last_hidden_state  # (B, T, D)
                 mask = tokens["attention_mask"].unsqueeze(-1)  # (B, T, 1)
                 masked_hidden = last_hidden * mask
@@ -67,10 +76,25 @@ class TextMetaTransformer(BaseEstimator, TransformerMixin):
         self.pca = None
 
     def fit(self, X, y=None):
-        texts = X["full_text"].astype(str).tolist()
-        emb = self.embedder.embed_texts(texts)
+        # Ensure cache directory exists
+        os.makedirs("cache", exist_ok=True)
+        cache_path = "cache/embeddings.npy"
 
-        # select numeric columns excluding full_text
+        # 1. Try to load cached embeddings
+        if os.path.exists(cache_path):
+            print("Loading cached embeddings...")
+            emb = np.load(cache_path)
+
+        else:
+            print("Cache not found. Computing embeddings...")
+            texts = X["full_text"].astype(str).tolist()
+            emb = self.embedder.embed_texts(texts)
+
+            # Save to cache
+            np.save(cache_path, emb)
+            print(f"Saved embeddings to {cache_path}")
+
+        # ---- Metadata handling (unchanged) ----
         self.metadata_cols = X.select_dtypes(include=[np.number]).columns.tolist()
         if "full_text" in self.metadata_cols:
             self.metadata_cols.remove("full_text")
@@ -113,23 +137,23 @@ class TextMetaTransformer(BaseEstimator, TransformerMixin):
         return self.transform(X)
 
 
-def build_pipeline():
+def build_pipeline(n_estimators=1000, max_depth=9, pca_components=128):
     feature_transformer = TextMetaTransformer(
         embedder=CamembertEmbedder(batch_size=32, max_length=128),
         scale_embeddings=True,
         scale_metadata=True,
-        pca_components=128
+        pca_components=pca_components
     )
 
     clf = XGBClassifier(
-        n_estimators=300,
-        max_depth=5,
+        n_estimators=n_estimators,
+        max_depth=max_depth,
         learning_rate=0.05,
         subsample=0.8,
         colsample_bytree=0.8,
         eval_metric="logloss",
         n_jobs=4,
-        random_state=42
+        random_state=42          
     )
 
     return Pipeline([
