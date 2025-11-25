@@ -54,5 +54,6 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | 16/11	|Camembert-base	|70.99|
 | 20/11 | Logistic Regression with metadata | 75.63                    |
 | 20/11 | XGBoost Classification | 77.35                    |
+| 25/11 | XGBoost on CamemBERT embeddings + metadata with PCA | 82.67                    |
 
 
