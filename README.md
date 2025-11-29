@@ -56,5 +56,6 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | 20/11 | XGBoost Classification | 77.35 | |
 | 25/11 | XGBoost on CamemBERT embeddings + metadata with PCA | 82.52 | 82.3 |
 | 25/11 | n_est = 1000, depth = 9, pca = 128 | 83.31| 82.6 | 
+| 29/11 | LR with more metadata | 79.63 | |
 
 
