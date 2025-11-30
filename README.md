@@ -57,6 +57,6 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | 25/11 | XGBoost on CamemBERT embeddings + metadata with PCA | 82.52 | 82.3 |
 | 25/11 | n_est = 1000, depth = 9, pca = 128 | 83.31| 82.6 | 
 | 29/11 | LR with more metadata | 79.63 | |
-| 30/11 | XGBoost on CamemBERT + selected metadata | 83.77|82.7|
+| 30/11 | XGBoost on CamemBERT + selected metadata | 83.70|82.7|
 
 
