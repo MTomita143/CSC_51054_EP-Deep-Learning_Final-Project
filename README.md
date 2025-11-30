@@ -59,5 +59,6 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | 29/11 | LR with more metadata | 79.63 | |
 | 30/11 | XGBoost on CamemBERT + selected metadata | 83.70|82.7|
 | 30/11 | XGBoost on finetuned CamemBERT + selected metadata | 84.92|82.7|
+| 30/11 | Camembert-base on user descriptions | 72.65| |
 
 
