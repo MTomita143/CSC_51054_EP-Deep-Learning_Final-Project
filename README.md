@@ -62,6 +62,6 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | 30/11 | Camembert-base on user descriptions | 72.65| |
 | 30/11 | Camembert-base + metadata | 77.3| 77|
 | 1/12 | XGBoost on PCA(CamemBERT + selected metadata) | 83.75|82.6|
-| 1/12 | XGBoost on UMAP(CamemBERT + selected metadata) | ||
+| 1/12 | XGBoost on UMAP(CamemBERT + selected metadata) | 83.85 ||
 
 
