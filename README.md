@@ -63,5 +63,5 @@ outputs/<model_name>_<YYYYMMDD>.csv
 | 30/11 | Camembert-base + metadata | 77.3| 77|
 | 1/12 | XGBoost on PCA(CamemBERT + selected metadata) | 83.75|82.6|
 | 1/12 | XGBoost on UMAP(CamemBERT + selected metadata) | 83.85 |82.5|
-
+| 3/12 | Fine tuning (tweet + metadata (p = 0.2) | 76.91 | |
 
